@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+Backend/node_modules/
+employee-portal/node_modules/
+
+# Environment & Secrets
+.env
+Backend/.env
+
+# SSL Certificates
+key.pem
+cert.pem
+
+# Build folders
+build/
+dist/
+employee-portal/build/
