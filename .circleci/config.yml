@@ -1,17 +1,33 @@
-# Node modules
-node_modules/
-Backend/node_modules/
-employee-portal/node_modules/
+version: 2.1
 
-# Environment & Secrets
-.env
-Backend/.env
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.2.0
 
-# SSL Certificates
-key.pem
-cert.pem
+jobs:
+  build-and-scan:
+    docker:
+      - image: cimg/node:20.9
+    steps:
+      - checkout
+      - run:
+          name: Install Backend
+          command: |
+            cd Backend
+            npm ci
+      - run:
+          name: Install Frontend
+          command: |
+            cd employee-portal
+            npm ci
+      - sonarcloud/scan:
+          organization: employee-portal-2025
+          sonar_token: $SONAR_TOKEN
+          project_key: VCSTDN2024_insy7314-poe-employee-student
+          project_name: Employee Portal – Student Submission
+          sonar_sources: Backend,employee-portal
+          sonar_exclusions: node_modules/**,build/**,dist/**
 
-# Build folders
-build/
-dist/
-employee-portal/build/
+workflows:
+  main:
+    jobs:
+      - build-and-scan
